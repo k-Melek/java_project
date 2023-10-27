@@ -52,7 +52,7 @@ public class User {
     @Size(min=8, max=128, message="Confirm Password must be between 8 and 128 characters")
 	private String confirm;
 	
-	private Boolean isBanned;
+	private Boolean isBanned = false;
 	
 	// This will not allow the createdAt column to be updated after creation
 	@Column(updatable=false)
