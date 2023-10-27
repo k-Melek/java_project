@@ -21,6 +21,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "charities")
@@ -41,7 +42,7 @@ public class Charity {
 	private String description;
 	@NotEmpty(message = "logo is required!")
 	private String logo;
-	@NotEmpty(message = "foundationYear is required!")
+	@NotNull(message = "foundationYear is required!")
 	private int foundationYear;
 	@NotEmpty(message = "numJort is required!")
 	private String numJort;
