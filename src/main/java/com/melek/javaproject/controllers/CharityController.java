@@ -17,9 +17,12 @@ import com.melek.javaproject.models.Address;
 import com.melek.javaproject.models.Category;
 import com.melek.javaproject.models.Charity;
 import com.melek.javaproject.models.CharityAndAddressAndCategoriesRequest;
+import com.melek.javaproject.models.User;
+import com.melek.javaproject.repositories.RoleRepository;
 import com.melek.javaproject.services.AddressService;
 import com.melek.javaproject.services.CategoryService;
 import com.melek.javaproject.services.CharityService;
+import com.melek.javaproject.services.UserService;
 
 import jakarta.validation.Valid;
 
@@ -36,6 +39,12 @@ public class CharityController {
 	
 	@Autowired
 	private CategoryService categoryServ;
+	
+	@Autowired
+	private UserService userServ;
+	
+	@Autowired
+	private RoleRepository roleRep;
 	
 	
 	@GetMapping("/charities")
@@ -91,7 +100,12 @@ public class CharityController {
 	    for (Category category : categories) {
 	        savedCategories.add(categoryServ.createCategory(category));
 	    }
-
+	    User founder = userServ.findUserById((long) 3);
+	    
+//	    founder.setRole(roleRep.findByRoleName("ROLE_FOUNDER"));
+//	    userServ.updateUser(founder);
+	    
+	    charity.setFounder(founder);
 	    // Set the Address and Categories to the Charity instance
 	    charity.setAddress(savedAddress);
 	    charity.setCategories(savedCategories);
