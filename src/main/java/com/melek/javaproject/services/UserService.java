@@ -33,29 +33,36 @@ public class UserService {
 		if (result.hasErrors()) {
 			return null;
 		}
-		String hashedPW = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-		user.setPassword(hashedPW);
-
-		user.setRole(roleRep.findByRoleName("ROLE_USER"));
-
-		user = userRep.save(user);
+		else {
+			
+			String hashedPW = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+			user.setPassword(hashedPW);
+			
+			user.setRole(roleRep.findByRoleName("ROLE_USER"));
+			
+			user = userRep.save(user);
 		return user;
+		}
 	}
 
 	public User login(LoginUser logUser, BindingResult result) {
 		Optional<User> maybeUser = userRep.findByEmail(logUser.getEmail());
 		if (!maybeUser.isPresent()) {
 			result.rejectValue("email", "logError", "Invalid Email!");
-		}
-		User user = maybeUser.get();
-		if (!BCrypt.checkpw(logUser.getPassword(), user.getPassword())) {
-			result.rejectValue("password", "logError", "Incorrect Password");
-		}
-		if (result.hasErrors()) {
-			return null;
+		} else {
+			User user = maybeUser.get();
+			if (!BCrypt.checkpw(logUser.getPassword(), user.getPassword())) {
+				result.rejectValue("password", "logError", "Incorrect Password");
+			}
+			if (result.hasErrors()) {
+				return null;
+			} else {
+				return user;
+			}
+
 		}
 
-		return user;
+		return null;
 	}
 
 	// Find User By Id
