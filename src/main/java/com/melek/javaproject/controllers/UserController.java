@@ -1,9 +1,12 @@
 package com.melek.javaproject.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +21,7 @@ import com.melek.javaproject.services.UserService;
 
 import jakarta.validation.Valid;
 
-//@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -26,10 +29,23 @@ public class UserController {
 	@Autowired
 	private UserService userServ; 
 	
+//	@GetMapping("/users")
+//	public ResponseEntity<?> allUsers(){
+//		System.out.println("testetstets  : "+ userServ.allUsers());
+//		return ResponseEntity.ok().body(userServ.allUsers());
+//	} 
+	
 	@GetMapping("/users")
-	public ResponseEntity<Object> allUsers(){
-		return ResponseEntity.ok().body(userServ.allUsers());
-	} 
+	public ResponseEntity<?> allUsers() {
+	    try {
+	        List<User> users = userServ.allUsers();
+	        return new ResponseEntity<>(users, HttpStatus.OK);
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Log the exception details
+	        return new ResponseEntity<>("Error fetching users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+
 	
 	
 	@PostMapping("/register")
@@ -64,6 +80,8 @@ public class UserController {
 	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
     }
+	
+	
 	
 //	@GetMapping("/users/{id}")
 //	public User oneStudent(@PathVariable Long id){

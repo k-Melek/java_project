@@ -4,8 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,13 +21,17 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+
+@Transactional
 @Entity
 @Table(name="users")
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
 	// Member variables
@@ -67,8 +71,9 @@ public class User {
 
 	// M:1 Roles -----------------------------------------
 	
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY)
+//	@JsonBackReference
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="role_id")
 	private Role role;
 	

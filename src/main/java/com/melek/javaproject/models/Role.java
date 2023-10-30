@@ -2,8 +2,8 @@ package com.melek.javaproject.models;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,7 +15,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="roles")
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Role {
 
 	// Member variables
@@ -25,8 +26,9 @@ public class Role {
 		
 		private String roleName;
 		
-		@JsonManagedReference
-		@OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+//		@JsonManagedReference
+		@JsonIgnore
+		@OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
 		private List<User> users;
 		
 		public Role() {}

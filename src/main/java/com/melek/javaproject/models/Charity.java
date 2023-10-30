@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,6 +28,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "charities")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Charity {
 
 	// Member variables
@@ -58,16 +62,19 @@ public class Charity {
 	private Date updatedAt;
 
 	// 1:1 Owner Relation Charity ------------------------
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "founder_id")
 	private User founder;
 
 	// 1:1 Address Relation Charity ------------------------
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "address_id")
 	private Address address;
 
 	// M:M Charity to Address
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "charities_categories", joinColumns = @JoinColumn(name = "charity_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private List<Category> categories;

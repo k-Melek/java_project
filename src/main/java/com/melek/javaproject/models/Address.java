@@ -1,5 +1,8 @@
 package com.melek.javaproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +17,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "addresses")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Address {
 
 	// Member variables
@@ -31,6 +35,7 @@ public class Address {
 	public Address() {}
 	
 	// 1:1 Address Relation Charity ------------------------
+	@JsonIgnore
 	@OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Charity charity;
 

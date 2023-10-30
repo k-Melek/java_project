@@ -18,7 +18,6 @@ import com.melek.javaproject.models.Category;
 import com.melek.javaproject.models.Charity;
 import com.melek.javaproject.models.CharityAndAddressAndCategoriesRequest;
 import com.melek.javaproject.models.User;
-import com.melek.javaproject.repositories.RoleRepository;
 import com.melek.javaproject.services.AddressService;
 import com.melek.javaproject.services.CategoryService;
 import com.melek.javaproject.services.CharityService;
@@ -26,7 +25,7 @@ import com.melek.javaproject.services.UserService;
 
 import jakarta.validation.Valid;
 
-//@CrossOrigin(origins = "http://localhost:8080")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class CharityController {
@@ -43,14 +42,20 @@ public class CharityController {
 	@Autowired
 	private UserService userServ;
 	
-	@Autowired
-	private RoleRepository roleRep;
+//	@Autowired
+//	private RoleRepository roleRep;
 	
 	
 	@GetMapping("/charities")
 	public ResponseEntity<Object> allCharities(){
 		return ResponseEntity.ok().body(charityServ.allCharities());
 	} 
+	
+	
+	@GetMapping("/charities/test")
+	public List<Charity> getAll(){
+		return charityServ.allCharities();
+	}
 	
 //	@PostMapping("/charities/new")
 //	public ResponseEntity<Object> createCharity(@Valid @RequestBody CharityAndAddressAndCategoriesRequest request, BindingResult result) {

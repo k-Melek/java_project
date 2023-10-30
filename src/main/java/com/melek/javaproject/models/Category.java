@@ -2,6 +2,9 @@ package com.melek.javaproject.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,6 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Categories")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category {
 
 	// Member variables
@@ -27,7 +31,8 @@ public class Category {
 	private Categories categoryName;
 
 	// M:M Charity to Address
-	@ManyToMany(fetch = FetchType.LAZY)
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "charities_categories", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "charity_id"))
 	private List<Charity> charities;
 
